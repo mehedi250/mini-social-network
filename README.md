@@ -1,6 +1,3 @@
-Here is the complete, ready-to-copy `README.md` file. You can paste this directly into your project.
-
-```markdown
 # Mini Social Network
 
 A clean, scalable social media platform built with Laravel, React, and Inertia.js. It features a fully containerized local development environment with secure, S3-compatible media storage using MinIO, and a highly optimized, optimistic UI interaction system.
@@ -119,11 +116,3 @@ In a separate terminal window, install your NPM packages and start the Vite comp
 **Md. Mehedi Hasan Shawon**
 
 * Software Engineer | Laravel & Backend Developer
-
----
-
-```
-
-Would you like to move on to building the Comment models and the frontend comment section next?
-
-```
