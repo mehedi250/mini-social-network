@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Repositories\Contracts;
+use Illuminate\Support\Collection;
+
+interface FollowRepositoryInterface
+{
+    // custom methods (commonly used in project)
+    public function create(array $data);
+
+    public function bulkInsert(array $data);
+
+    public function createOrUpdateWithWhereCondition(array $where, array $params): object;
+
+    public function getAllDataByWhereCondition(array $where, array $columns = ['*']): Collection;
+
+    public function getSingleDataByWhereCondition(array $where, array $columns = ['*']): ?object;
+
+    public function deleteByQuery(array $where): bool;
+
+    public function deleteByWhereIn(array $where, string $whereInColumn, array $whereInData): bool;
+
+    public function bulkDelete(array $ids): bool;
+
+    public function updateByWhereCondition(array $where, array $params): bool;
+
+    public function getDataWithWhereIn(array $where, string $whereInColumn, array $whereInData, array $columns = ['*']): Collection;
+
+    public function getDataByPagination(array $where, int $skip, int $limit, string $orderByColumn = 'id', string $order = 'desc', array $columns = ['*']): Collection;
+
+    public function getCountByWhereCondition(array $where): int;
+}
