@@ -1,3 +1,4 @@
+import CommentSection from '@/Components/Posts/CommentSection';
 import CreatePostForm from '@/Components/Posts/CreatePostForm';
 import LikeButton from '@/Components/Posts/LikeButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -43,12 +44,12 @@ export default function Index({ auth, posts: initialPosts, errors }) {
                             <div key={post.id} className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
 
                                 <div className="flex items-center space-x-3 mb-4">
-                                    <Link href={`/profile/${post.user.id}`} className="shrink-0">
+                                    <Link href={`/profile/${post.user?.id}`} className="shrink-0">
                                         <div className="w-12 h-12 rounded-full bg-gray-200 border border-gray-300 overflow-hidden flex items-center justify-center">
-                                            {post.user.profile?.profile_image ? (
+                                            {post.user?.profile?.profile_image ? (
                                                 <img
-                                                    src={`/storage/${post.user.profile.profile_image}`}
-                                                    alt={`${post.user.name}'s avatar`}
+                                                    src={post.user?.profile?.profile_image}
+                                                    alt={`${post.user?.name}'s avatar`}
                                                     className="w-full h-full object-cover"
                                                 />
                                             ) : (
@@ -96,13 +97,14 @@ export default function Index({ auth, posts: initialPosts, errors }) {
                                 )}
 
                                 {/* Post Footer: Like and Comment Interaction Bar */}
-                                <div className="flex items-center space-x-6 text-sm text-gray-500 border-t border-gray-100 pt-3 mt-2">
-                                    <LikeButton post={post} />
+                                <div className="flex items-start gap-6 text-sm text-gray-500 border-t border-gray-100 pt-3 mt-2">
+                                    <div className="pt-0.5">
+                                        <LikeButton post={post} />
+                                    </div>
 
-                                    <button className="flex items-center space-x-1 hover:text-blue-600 transition font-medium">
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                                        <span>{post.comments_count} Comments</span>
-                                    </button>
+                                    <div className="flex-1">
+                                        <CommentSection post={post} />
+                                    </div>
                                 </div>
 
                             </div>

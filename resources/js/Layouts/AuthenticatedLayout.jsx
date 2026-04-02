@@ -19,16 +19,16 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                    <img src="/storage/logo.png" alt="Logo" className="h-8 w-8"/>
+                                    <img src="/storage/logo.png" alt="Logo" className="h-8 w-8" />
                                 </Link>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    href={route('feed')}
+                                    active={route().current('feed')}
                                 >
-                                    Dashboard
+                                    Feed
                                 </NavLink>
                             </div>
                         </div>
@@ -62,9 +62,14 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route('profile.edit')}
+                                            href={route('profile.show')}
                                         >
                                             Profile
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route('profile-settings.edit')}
+                                        >
+                                            Settings
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
@@ -147,7 +152,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href={route('profile-settings.edit')}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink

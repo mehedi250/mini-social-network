@@ -74,4 +74,9 @@ class UserService implements UserServiceInterface
     {
         return $this->repository->getCountByWhereCondition($where);
     }
+
+    public function getUserWithProfile(int $userId): ?object
+    {
+        return $this->repository->getUserWithProfile($userId);
+    }
 }

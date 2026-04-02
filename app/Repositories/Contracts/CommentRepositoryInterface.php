@@ -29,4 +29,6 @@ interface CommentRepositoryInterface
     public function getDataByPagination(array $where, int $skip, int $limit, string $orderByColumn = 'id', string $order = 'desc', array $columns = ['*']): Collection;
 
     public function getCountByWhereCondition(array $where): int;
+
+    public function getCommentsWithUser(int $postId): Collection;
 }

@@ -75,4 +75,12 @@ class CommentRepository implements CommentRepositoryInterface
     {
         return $this->model->where($where)->count();
     }
+
+    public function getCommentsWithUser(int $postId): Collection
+    {
+        return $this->model->with([
+                'user:id,name',
+                'user.profile:id,user_id,profile_image'
+            ])->where('post_id', $postId)->get();
+    }
 }

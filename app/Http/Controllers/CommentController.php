@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCommentRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Contracts\CommentServiceInterface;
@@ -15,53 +17,13 @@ class CommentController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(int $postId): JsonResponse
     {
-        return response()->json([
-            'data' => $this->service->getAllDataByWhereCondition([])
-        ]);
+        return $this->service->getComments($postId);
     }
 
-    public function store(Request $request)
+    public function store(int $postId, StoreCommentRequest $request): JsonResponse
     {
-        $data = $this->service->create($request->all());
-
-        return response()->json([
-            'data' => $data
-        ], 201);
-    }
-
-    public function show(int $id)
-    {
-        $data = $this->service->getSingleDataByWhereCondition([
-            'id' => $id
-        ]);
-
-        return response()->json([
-            'data' => $data
-        ]);
-    }
-
-    public function update(Request $request, int $id)
-    {
-        $data = $this->service->updateByWhereCondition(
-            ['id' => $id],
-            $request->all()
-        );
-
-        return response()->json([
-            'data' => $data
-        ]);
-    }
-
-    public function destroy(int $id)
-    {
-        $data = $this->service->deleteByQuery([
-            'id' => $id
-        ]);
-
-        return response()->json([
-            'data' => $data
-        ]);
+        return $this->service->createComment($postId, $request->user()->id, $request->input('content'));
     }
 }

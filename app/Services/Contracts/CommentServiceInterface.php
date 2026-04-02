@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Contracts;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 
 interface CommentServiceInterface
@@ -29,4 +30,9 @@ interface CommentServiceInterface
     public function getDataByPagination(array $where, int $skip, int $limit, string $orderByColumn = 'id', string $order = 'desc', array $columns = ['*']): Collection;
 
     public function getCountByWhereCondition(array $where): int;
+
+    // other methods (specific to project)
+    public function getComments(int $postId): JsonResponse;
+
+    public function createComment(int $postId, int $userId, string $content): JsonResponse;
 }

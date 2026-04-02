@@ -109,6 +109,8 @@ class PostService implements PostServiceInterface
                 'privacy' => $validatedData['privacy'] ?? Post::PRIVACY_PUBLIC,
             ]);
 
+            $post->load('user:id,name', 'user.profile:id,user_id,profile_image');
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Post created successfully',

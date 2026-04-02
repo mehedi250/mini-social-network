@@ -75,4 +75,9 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->model->where($where)->count();
     }
+
+    public function getUserWithProfile(int $userId): ?object
+    {
+        return $this->model->with('profile')->find($userId);
+    }
 }

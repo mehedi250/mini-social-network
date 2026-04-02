@@ -4,6 +4,7 @@ namespace App\Services\Implementations;
 
 use App\Repositories\Contracts\CommentRepositoryInterface;
 use App\Services\Contracts\CommentServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 
 class CommentService implements CommentServiceInterface
@@ -73,5 +74,46 @@ class CommentService implements CommentServiceInterface
     public function getCountByWhereCondition(array $where): int
     {
         return $this->repository->getCountByWhereCondition($where);
+    }
+
+    public function getComments(int $postId): JsonResponse
+    {
+        try {
+            $comments = $this->repository->getCommentsWithUser($postId);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Comments retrieved successfully',
+                'data' => $comments
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to retrieve comments',
+                'data' => null
+            ], 500);
+        }
+    }
+
+    public function createComment(int $postId, int $userId, string $content): JsonResponse
+    {
+        try {
+            $comment = $this->repository->create([
+                'post_id' => $postId,
+                'user_id' => $userId,
+                'content' => $content
+            ]);
+            $comment->load('user:id,name', 'user.profile:id,user_id,profile_image');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Comment created successfully',
+                'data' => $comment
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to create comment',
+                'data' => null
+            ], 500);
+        }
     }
 }

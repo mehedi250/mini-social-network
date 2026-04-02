@@ -5,63 +5,39 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Contracts\UserProfileServiceInterface;
+use App\Services\Contracts\UserServiceInterface;
+use Inertia\Inertia;
 
 class UserProfileController extends Controller
 {
     protected $service;
+    protected $userService;
+
     public function __construct(
-        UserProfileServiceInterface $service
+        UserProfileServiceInterface $service,
+        UserServiceInterface $userService
     ) {
         $this->service = $service;
+        $this->userService = $userService;
     }
 
-    public function index()
+    public function show($userId = null)
     {
-        return response()->json([
-            'data' => $this->service->getAllDataByWhereCondition([])
+        $userId = trim($userId) ? (int) $userId : null;
+        $authUserId = auth()->id();
+        $userId = $userId ?? $authUserId;
+        $user = $this->userService->getUserWithProfile($userId);
+        return Inertia::render('UserProfile/ViewProfile', [
+            'user' => $user,
+            'isOwner' => $user->id === $authUserId
         ]);
     }
 
-    public function store(Request $request)
+    public function edit()
     {
-        $data = $this->service->create($request->all());
-
-        return response()->json([
-            'data' => $data
-        ], 201);
-    }
-
-    public function show(int $id)
-    {
-        $data = $this->service->getSingleDataByWhereCondition([
-            'id' => $id
-        ]);
-
-        return response()->json([
-            'data' => $data
-        ]);
-    }
-
-    public function update(Request $request, int $id)
-    {
-        $data = $this->service->updateByWhereCondition(
-            ['id' => $id],
-            $request->all()
-        );
-
-        return response()->json([
-            'data' => $data
-        ]);
-    }
-
-    public function destroy(int $id)
-    {
-        $data = $this->service->deleteByQuery([
-            'id' => $id
-        ]);
-
-        return response()->json([
-            'data' => $data
+        $user = $this->userService->getUserWithProfile(auth()->id());
+        return Inertia::render('UserProfile/EditProfile', [
+            'user' => $user,
         ]);
     }
 }

@@ -85,7 +85,7 @@ class PostRepository implements PostRepositoryInterface
             ])
             ->withCount(['likes', 'comments'])
             ->withExists(['likes as is_liked' => function ($query) use ($userId) {
-                $query->where('user_id', $userId); 
+                $query->where('user_id', $userId);
             }])
             ->where('privacy', 'PUBLIC')
             ->latest('id')
