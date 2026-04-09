@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profile/view/{userId?}', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
 });
 
 

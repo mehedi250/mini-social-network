@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Contracts;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 
 interface UserProfileServiceInterface
@@ -29,4 +30,6 @@ interface UserProfileServiceInterface
     public function getDataByPagination(array $where, int $skip, int $limit, string $orderByColumn = 'id', string $order = 'desc', array $columns = ['*']): Collection;
 
     public function getCountByWhereCondition(array $where): int;
+
+    public function updateProfile(array $data, $profileImage, $coverImage, int $userId);
 }

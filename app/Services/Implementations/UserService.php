@@ -2,9 +2,13 @@
 
 namespace App\Services\Implementations;
 
+use App\Models\UserProfile;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Contracts\UserServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserService implements UserServiceInterface
 {

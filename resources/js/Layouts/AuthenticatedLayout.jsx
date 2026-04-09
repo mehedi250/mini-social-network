@@ -4,6 +4,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -38,11 +39,27 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
+                                            {/* ADDED 'gap-2' here for spacing */}
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                className="inline-flex items-center gap-2 rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
-                                                {user.name}
+                                                {/* Desktop Avatar */}
+                                                <div className="shrink-0">
+                                                    {user.profile?.profile_image ? (
+                                                        <img
+                                                            src={user.profile.profile_image}
+                                                            alt="Avatar"
+                                                            className="h-8 w-8 rounded-full object-cover border border-gray-200"
+                                                        />
+                                                    ) : (
+                                                        <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                                            {user.name.charAt(0)}
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                <span>{user.name}</span>
 
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
@@ -61,8 +78,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
+                                        {/* Added user.id to the route so Laravel knows whose profile to load */}
                                         <Dropdown.Link
-                                            href={route('profile.show')}
+                                            href={route('profile.show', user.id)}
                                         >
                                             Profile
                                         </Dropdown.Link>
@@ -142,18 +160,38 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
-                                {user.name}
+                        {/* Mobile Avatar Section */}
+                        <div className="px-4 flex items-center gap-3">
+                            <div className="shrink-0">
+                                {user.profile?.profile_image ? (
+                                    <img
+                                        src={user.profile.profile_image}
+                                        alt="Avatar"
+                                        className="h-10 w-10 rounded-full object-cover border border-gray-200"
+                                    />
+                                ) : (
+                                    <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
+                                        {user.name.charAt(0)}
+                                    </div>
+                                )}
                             </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                {user.email}
+
+                            <div>
+                                <div className="text-base font-medium text-gray-800">
+                                    {user.name}
+                                </div>
+                                <div className="text-sm font-medium text-gray-500">
+                                    {user.email}
+                                </div>
                             </div>
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile-settings.edit')}>
+                            <ResponsiveNavLink href={route('profile.show', user.id)}>
                                 Profile
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('profile-settings.edit')}>
+                                Settings
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
@@ -166,6 +204,8 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
             </nav>
+
+            <Toaster position="top-right" reverseOrder={false} />
 
             {header && (
                 <header className="bg-white shadow">

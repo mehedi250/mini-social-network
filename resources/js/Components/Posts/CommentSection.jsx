@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { Link } from '@inertiajs/react';
 
 export default function CommentSection({ post }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -84,17 +85,19 @@ export default function CommentSection({ post }) {
                         <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                             {comments.map(comment => (
                                 <div key={comment.id} className="bg-gray-50 p-3 rounded-lg flex gap-3">
-                                    {comment.user?.profile?.profile_image ? (
-                                        <img
-                                            src={comment.user.profile.profile_image}
-                                            alt={comment.user?.name || 'User'}
-                                            className="w-8 h-8 rounded-full object-cover flex-shrink-0 border border-gray-200"
-                                        />
-                                    ) : (
-                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex-shrink-0 flex items-center justify-center font-bold text-blue-600 text-sm">
-                                            {comment.user?.name?.charAt(0) || 'U'}
-                                        </div>
-                                    )}
+                                    <Link href={route('profile.show', comment.user.id)}>
+                                        {comment.user?.profile?.profile_image ? (
+                                            <img
+                                                src={comment.user.profile.profile_image}
+                                                alt={comment.user?.name || 'User'}
+                                                className="w-8 h-8 rounded-full object-cover flex-shrink-0 border border-gray-200"
+                                            />
+                                        ) : (
+                                            <div className="w-8 h-8 rounded-full bg-blue-100 flex-shrink-0 flex items-center justify-center font-bold text-blue-600 text-sm">
+                                                {comment.user?.name?.charAt(0) || 'U'}
+                                            </div>
+                                        )}
+                                    </Link>
 
                                     <div>
                                         <div className="font-semibold text-sm text-gray-900">{comment.user?.name}</div>
